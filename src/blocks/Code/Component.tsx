@@ -4,7 +4,7 @@ import { Code } from './Component.client'
 
 export type CodeBlockProps = {
   code: string
-  language?: string
+  language?: string | null
   blockType: 'code'
 }
 

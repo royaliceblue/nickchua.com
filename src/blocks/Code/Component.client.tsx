@@ -1,18 +1,24 @@
 'use client'
 import { Highlight, themes } from 'prism-react-renderer'
+import { Prism } from './prism'
+import 'prismjs/components/prism-bash'
+import 'prismjs/components/prism-python'
 import React from 'react'
 import { CopyButton } from './CopyButton'
 
 type Props = {
   code: string
-  language?: string
+  language?: string | null
 }
 
-export const Code: React.FC<Props> = ({ code, language = '' }) => {
+export const Code: React.FC<Props> = ({ code, language }) => {
   if (!code) return null
 
+  const languageToUse =
+    typeof language === 'string' && language.trim().length > 0 ? language : 'text'
+
   return (
-    <Highlight code={code} language={language} theme={themes.vsDark}>
+    <Highlight prism={Prism} code={code} language={languageToUse} theme={themes.vsDark}>
       {({ getLineProps, getTokenProps, tokens }) => (
         <pre className="bg-black p-4 border text-xs border-border rounded overflow-x-auto">
           {tokens.map((line, i) => (

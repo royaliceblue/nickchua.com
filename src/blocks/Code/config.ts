@@ -21,6 +21,14 @@ export const Code: Block = {
           label: 'CSS',
           value: 'css',
         },
+        {
+          label: 'Bash',
+          value: 'bash',
+        },
+        {
+          label: 'Python',
+          value: 'python',
+        },
       ],
     },
     {
@@ -28,6 +36,11 @@ export const Code: Block = {
       type: 'code',
       label: false,
       required: true,
+      admin: {
+        components: {
+          Field: '@/blocks/Code/LanguageCodeField',
+        },
+      },
     },
   ],
 }
