@@ -14,6 +14,7 @@ import { Header } from './Header/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -63,7 +64,20 @@ export default buildConfig({
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
-  plugins,
+  plugins: [
+    ...plugins,
+    vercelBlobStorage({
+      enabled: !!process.env.BLOB_READ_WRITE_TOKEN, // optional, nice for local dev
+      collections: {
+        // use your actual media collection slug (most templates use 'media')
+        [Media.slug]: true, // or just: media: true
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+      clientUploads: true, // recommended on Vercel (server upload limit ~4.5MB) :contentReference[oaicite:2]{index=2}
+      addRandomSuffix: true, // optional
+      // prefix: 'nickchua-com', // optional, if you want a folder-like prefix
+    }),
+  ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
