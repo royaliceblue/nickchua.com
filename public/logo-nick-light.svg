@@ -1,0 +1,35 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="150"
+  height="34"
+  viewBox="0 0 150 34"
+  fill="none"
+  role="img"
+  aria-label="Nick Chua logo"
+>
+  <!-- Icon -->
+  <g transform="translate(0,4)">
+    <path
+      d="M6 26V2H10.5L19 17V2H23.5V26H19L10.5 11V26H6Z"
+      fill="#111827"
+    />
+    <path
+      d="M11 6L14 11L12.8 12.2L9.8 7.2L11 6Z"
+      fill="#111827"
+      opacity="0.18"
+    />
+  </g>
+
+  <!-- Wordmark -->
+  <text
+    x="32"
+    y="24"
+    fill="#111827"
+    font-size="20"
+    font-weight="600"
+    font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial"
+    letter-spacing="-0.015em"
+  >
+    Nick Chua
+  </text>
+</svg>
