@@ -81,6 +81,6 @@ export default async function Page() {
 
 export function generateMetadata(): Metadata {
   return {
-    title: `Payload Website Template Posts`,
+    title: `Posts | Nick Chua - Security Engineer | OSCP+, OSWP, BSCP`,
   }
 }
