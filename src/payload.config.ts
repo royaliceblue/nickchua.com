@@ -74,7 +74,7 @@ export default buildConfig({
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
       clientUploads: true, // recommended on Vercel (server upload limit ~4.5MB) :contentReference[oaicite:2]{index=2}
-      addRandomSuffix: true, // optional
+      addRandomSuffix: false, // optional
       // prefix: 'nickchua-com', // optional, if you want a folder-like prefix
     }),
   ],
