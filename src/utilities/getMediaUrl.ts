@@ -9,16 +9,29 @@ import { getClientSideURL } from '@/utilities/getURL'
 export const getMediaUrl = (url: string | null | undefined, cacheTag?: string | null): string => {
   if (!url) return ''
 
+  let normalizedUrl = url.trim()
+  normalizedUrl = normalizedUrl.replace(/^(https?:\/\/)(?=https?:\/\/)/i, '')
+
   if (cacheTag && cacheTag !== '') {
     cacheTag = encodeURIComponent(cacheTag)
   }
 
+  const separator = normalizedUrl.includes('?') ? '&' : '?'
+  const hasProtocol = /^https?:\/\//i.test(normalizedUrl)
+  const isProtocolRelative = normalizedUrl.startsWith('//')
+  const isRootRelative = normalizedUrl.startsWith('/')
+
   // Check if URL already has http/https protocol
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    return cacheTag ? `${url}?${cacheTag}` : url
+  if (hasProtocol || isProtocolRelative) {
+    const absoluteUrl = isProtocolRelative ? `https:${normalizedUrl}` : normalizedUrl
+    return cacheTag ? `${absoluteUrl}${separator}${cacheTag}` : absoluteUrl
+  }
+
+  if (isRootRelative) {
+    return cacheTag ? `${normalizedUrl}${separator}${cacheTag}` : normalizedUrl
   }
 
   // Otherwise prepend client-side URL
   const baseUrl = getClientSideURL()
-  return cacheTag ? `${baseUrl}${url}?${cacheTag}` : `${baseUrl}${url}`
+  return cacheTag ? `${baseUrl}${normalizedUrl}${separator}${cacheTag}` : `${baseUrl}${normalizedUrl}`
 }
