@@ -22,7 +22,11 @@ export default async function CategoriesIndexPage() {
       id: true,
       title: true,
       slug: true,
-      breadcrumbs: true,
+      description: true,
+      icon: true,
+      badge: true,
+      featured: true,
+      sortOrder: true,
     },
   })
 
@@ -59,12 +63,22 @@ export default async function CategoriesIndexPage() {
       id: c.id,
       title: c.title ?? c.slug,
       slug: c.slug,
+      description: c.description ?? null,
+      icon: c.icon ?? null,
+      badge: c.badge ?? null,
+      featured: Boolean(c.featured),
+      sortOrder: typeof c.sortOrder === 'number' ? c.sortOrder : 100,
       count: counts.get(c.id) ?? 0,
     }))
     // show categories that actually have posts (optional)
     .filter((c) => c.count > 0)
-    // sort by popularity first, then alphabetically as tie-breaker
-    .sort((a, b) => b.count - a.count || a.title.localeCompare(b.title))
+    // featured first, then manual order, then popularity
+    .sort((a, b) => {
+      if (a.featured !== b.featured) return a.featured ? -1 : 1
+      const orderDiff = a.sortOrder - b.sortOrder
+      if (orderDiff !== 0) return orderDiff
+      return b.count - a.count || a.title.localeCompare(b.title)
+    })
 
   const totalPosts = Array.from(counts.values()).reduce((a, b) => a + b, 0)
 

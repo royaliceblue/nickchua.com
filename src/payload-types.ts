@@ -396,6 +396,26 @@ export interface Category {
   id: string;
   title: string;
   /**
+   * Shown on /categories cards. Keep it 1–2 lines (e.g., “Write-ups focused on privilege escalation & post-exploitation.”)
+   */
+  description?: string | null;
+  /**
+   * Used for the icon on /categories.
+   */
+  icon?: ('folder' | 'terminal' | 'shield' | 'bug' | 'network' | 'lock' | 'binary' | 'database') | null;
+  /**
+   * Optional short badge text (e.g., “OSCP”, “HTB”, “AD”).
+   */
+  badge?: string | null;
+  /**
+   * Featured categories show at the top of /categories.
+   */
+  featured?: boolean | null;
+  /**
+   * Lower comes first. Use to manually order categories (e.g., Boot2Root=1, CTF=2...).
+   */
+  sortOrder?: number | null;
+  /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
@@ -1317,6 +1337,11 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
+  description?: T;
+  icon?: T;
+  badge?: T;
+  featured?: T;
+  sortOrder?: T;
   generateSlug?: T;
   slug?: T;
   parent?: T;
