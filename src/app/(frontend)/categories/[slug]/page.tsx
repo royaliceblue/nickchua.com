@@ -12,6 +12,7 @@ export async function generateStaticParams() {
     collection: 'categories',
     draft: false,
     limit: 1000,
+    overrideAccess: false,
     pagination: false,
     select: { slug: true },
   })
@@ -35,24 +36,25 @@ export default async function CategoryPage({ params: paramsPromise }: Args) {
     categoryId: category.id,
     draft,
   })
+  const breadcrumbs = Array.isArray(category.breadcrumbs) ? category.breadcrumbs : []
 
   return (
     <main className="pt-16 pb-24">
       <div className="container space-y-6">
         <header className="space-y-2">
-          <h1 className="text-3xl font-bold">{category.title ?? category.title ?? decodedSlug}</h1>
+          <h1 className="text-3xl font-bold">{category.title ?? decodedSlug}</h1>
 
           {/* If your category has breadcrumbs, transform them to /categories/... */}
-          {Array.isArray(category.breadcrumbs) && category.breadcrumbs.length > 0 ? (
+          {breadcrumbs.length > 0 ? (
             <nav className="text-sm text-muted-foreground">
-              {category.breadcrumbs.map((b: any, i: number) => {
+              {breadcrumbs.map((b: any, i: number) => {
                 const href = b?.url ? `/categories${b.url}` : '#'
                 return (
                   <span key={`${href}-${i}`}>
                     <a className="underline" href={href}>
-                      {b.label}
+                      {b?.label}
                     </a>
-                    {i < category.breadcrumbs.length - 1 ? ' / ' : ''}
+                    {i < breadcrumbs.length - 1 ? ' / ' : ''}
                   </span>
                 )
               })}
@@ -84,7 +86,7 @@ export async function generateMetadata({ params: paramsPromise }: Args): Promise
   const category = await queryCategoryBySlug({ slug: decodedSlug })
 
   if (!category) return { title: 'Category not found' }
-  const title = category.title ?? category.title ?? decodedSlug
+  const title = category.title ?? decodedSlug
 
   return {
     title: `${title} | Categories`,
@@ -97,6 +99,7 @@ const queryCategoryBySlug = cache(async ({ slug }: { slug: string }) => {
   const result = await payload.find({
     collection: 'categories',
     limit: 1,
+    overrideAccess: false,
     pagination: false,
     where: {
       slug: { equals: slug },
@@ -116,6 +119,7 @@ const queryPostsByCategoryId = cache(
       collection: 'posts',
       draft,
       limit: 50,
+      overrideAccess: draft,
       pagination: false,
       sort: '-publishedAt',
       where: {
