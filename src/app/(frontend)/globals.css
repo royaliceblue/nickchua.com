@@ -101,3 +101,10 @@ html[data-theme='dark'],
 html[data-theme='light'] {
   opacity: initial;
 }
+
+@layer components {
+  .payload-richtext.prose code::before,
+  .payload-richtext.prose code::after {
+    content: '';
+  }
+}
